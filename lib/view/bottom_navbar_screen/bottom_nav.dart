@@ -20,7 +20,7 @@ class _BottomNavState extends State<BottomNav> {
   Widget build(BuildContext context) {
     List<Widget> pages = [
       HomeScreen(),
-      Sample(),
+      MusicShortsScreen(),
       Explore(),
       Library(),
       Updrade(),
@@ -62,7 +62,7 @@ class _BottomNavState extends State<BottomNav> {
             label: "library",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.workspace_premium),
+            icon: Icon(Icons.play_circle_fill),
             label: "upgrade",
           ),
         ],
