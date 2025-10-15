@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 import 'package:yt_music_clone/core/constants/color_constats.dart';
 import 'package:yt_music_clone/core/widgets/logo.dart';
 import 'package:yt_music_clone/view/global_widgets/myplancard.dart';
@@ -12,6 +13,49 @@ class Updrade extends StatefulWidget {
 }
 
 class _UpdradeState extends State<Updrade> {
+  final List<String> questions = const [
+    'How do I play videos and music in the background?',
+    'What products support Premium?',
+    'How many members can I add to a plan?',
+    'How can I cancel my subscription?',
+  ];
+  late VideoPlayerController _controller;
+  late VideoPlayerController _controller2;
+
+  void initState() {
+    super.initState();
+
+    // Create a network video controller
+    _controller =
+        VideoPlayerController.network(
+            'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+          )
+          ..initialize().then((_) {
+            _controller
+              ..setLooping(true) // repeat video
+              // ..setVolume(0.) // full volume (set 0 for mute)
+              ..play(); // auto play
+            setState(() {}); // refresh UI after video is ready
+          });
+    //controller 2
+    _controller2 =
+        VideoPlayerController.network(
+            'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
+          )
+          ..initialize().then((_) {
+            _controller2
+              ..setLooping(true)
+              ..setVolume(1.0)
+              ..play();
+            setState(() {});
+          });
+    void dispose() {
+      _controller.dispose();
+      _controller2.dispose();
+      super.dispose();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -286,6 +330,22 @@ class _UpdradeState extends State<Updrade> {
                   '1-month trial for ₹0\nAdd up to 5 family members (ages 13+)',
               buttonText: 'Try 1 month for ₹0',
               buttonColor: Color(0xFF0D47A1),
+              icon: Icons.family_restroom_outlined,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
+              },
+            ),
+            SizedBox(height: 20),
+            PlanCard(
+              title: 'two person',
+              price: '₹149.00/month',
+              subtitle:
+                  '1-month trial for ₹0\nAdd up to 5 family members (ages 13+)',
+              buttonText: 'Try 1 month for ₹0',
+              buttonColor: Color(0xFF0D47A1),
               icon: Icons.group,
               onTap: () {
                 Navigator.push(
@@ -293,6 +353,131 @@ class _UpdradeState extends State<Updrade> {
                   MaterialPageRoute(builder: (context) => HomeScreen()),
                 );
               },
+            ),
+            SizedBox(height: 20),
+            PlanCard(
+              title: 'Student',
+              price: '₹59.00/month',
+              subtitle:
+                  '1-month trial for ₹0\neligible students only.annual verification required.\nrestriction apply',
+              buttonText: 'Try 1 month for ₹0',
+              buttonColor: Color(0xFF0D47A1),
+              icon: Icons.cast_for_education,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
+              },
+            ),
+            SizedBox(height: 80),
+            Text(
+              "YouTube Music, your Way",
+              style: TextStyle(
+                color: ColorConstants.pureWhite,
+                fontSize: 30,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: 25),
+            Text(
+              "These features are avalilable in the Youtube\n         music app without a subscription",
+              style: TextStyle(color: ColorConstants.pureWhite, fontSize: 16),
+            ),
+            SizedBox(height: 45),
+            SizedBox(height: 150, width: 300, child: VideoPlayer(_controller)),
+            SizedBox(height: 40),
+            Text(
+              "Move to your own rhythm",
+              style: TextStyle(
+                color: ColorConstants.pureWhite,
+                fontSize: 30,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: 17),
+            Text(
+              "Listen to mixes based on the music you love,and discoverd thousands of other playlists curated to\n match any mood or moment..",
+              style: TextStyle(color: ColorConstants.pureWhite),
+            ),
+            SizedBox(height: 30),
+            Container(
+              height: 300,
+              width: 150,
+              decoration: BoxDecoration(
+                color: Colors.amberAccent,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: VideoPlayer(_controller2),
+            ),
+            SizedBox(height: 20),
+            Text(
+              "Customize your listening \n experiance",
+              style: TextStyle(
+                color: ColorConstants.pureWhite,
+                fontWeight: FontWeight.w600,
+                fontSize: 30,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              "combine your favorite artists and fine-tune your\n own music experiance",
+              style: TextStyle(color: ColorConstants.pureWhite),
+            ),
+            SizedBox(height: 60),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Text(
+                    'Questions? We\'re here to help.',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstants.pureWhite,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ListView.builder(
+                    itemCount: questions.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return ExpansionTile(
+                        title: Text(
+                          questions[index],
+                          style: TextStyle(color: ColorConstants.pureWhite),
+                        ),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Answer content goes here. You can customize this per question.',
+                              style: TextStyle(color: ColorConstants.pureWhite),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  const Divider(),
+
+                  // Help Center link
+                  GestureDetector(
+                    onTap: () {
+                      // TODO: Add your help center link logic here
+                    },
+                    child: const Text(
+                      'Other questions? Visit the Help Center',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
             ),
           ],
         ),
